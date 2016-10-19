@@ -131,7 +131,7 @@ if ($client->getAccessToken()) {
 
         try {
             $searchRequest->setDimensions(["date"]);
-            var_dump($data = $service->searchanalytics->query($_GET['website'], $searchRequest));
+            $data = $service->searchanalytics->query($_GET['website'], $searchRequest);
         }
         catch (Exception $e){
             echo $e->getMessage();
@@ -147,7 +147,7 @@ if ($client->getAccessToken()) {
             <a class='login' href='<?= $authUrl ?>'>Connect Me!</a>
         </div>
     </div>
-<?php elseif (empty($data)): ?>
+<?php else : ?>
     <a class='logout' href='?logout'>Logout</a>
 
     <form id="url" method="GET" action="<?= $_SERVER['PHP_SELF'] ?>">
@@ -263,5 +263,11 @@ if ($client->getAccessToken()) {
             });
         });
     </script>
+
+    <?php if(!empty($data)): ?>
+    <?php var_dump($data) ?>
+    <?php else: ?>
+    <?php echo "Nothing to show"?>
+    <?php endif; ?>
 <?php endif ?>
 
