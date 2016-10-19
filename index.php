@@ -265,6 +265,64 @@ if ($client->getAccessToken()) {
     </script>
 
     <?php if(!empty($data)): ?>
+        <script type="text/javascript">
+
+            // Load the Visualization API and the corechart package.
+            google.charts.load('current', {'packages':['line', 'corechart']});
+
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                // Create the data table.
+                var data = new google.visualization.DataTable();
+                data.addColumn('date', 'Date');
+                data.addColumn('number', "Clicks");
+                data.addColumn('number', "Impressions");
+                data.addColumn('number', "ctr");
+                data.addColumn('number', "Position");
+                data.addRows([
+                    <?php
+                        foreach ($data->getRows() as $row)
+echo "[ new Date('{$row->keys[0]}', $row->clicks, $row->impressions, $row->ctr, $row->position],";
+                        ?>
+/*                    [new Date(2014, 0, 1),  -.5, -.5, -.5,  5.7],
+                    [new Date(2014, 1),   .4,  .4,  .4,  8.7],
+                    [new Date(2014, 2),   .5,  .5,  .5,   12],
+                    [new Date(2014, 3),  2.9, 2.9, 2.9, 15.3],
+                    [new Date(2014, 4),  6.3, 6.3, 6.3, 18.6],
+                    [new Date(2014, 5),    9,   9,   9, 20.9],
+                    [new Date(2014, 6), 10.6,10.6,10.6, 19.8],
+                    [new Date(2014, 7), 10.3,10.3,10.3, 16.6],
+                    [new Date(2014, 8),  7.4, 7.4, 7.4, 13.3],
+                    [new Date(2014, 9),  4.4, 4.4, 4.4,  9.9],
+                    [new Date(2014, 10), 1.1, 1.1, 1.1,  6.6],
+                    [new Date(2014, 11), -.2, -.2, -.2,  4.5]*/
+                ]);
+
+                var materialOptions = {
+                    width: 900,
+                    height: 400,
+                    axes: {
+                        // Adds labels to each axis; they don't have to match the axis names.
+                        y: {
+                                Temps: {label: 'Temps (Celsius)'}
+                           }
+                        }
+                    };
+
+                // Instantiate and draw our chart, passing in some options.
+                var chartDiv = document.getElementById('chart_div');
+                var materialChart = new google.charts.Line(chartDiv);
+                materialChart.draw(data, materialOptions);
+            }
+
+        </script>
+
+        <body>
+        <!--Div that will hold the pie chart-->
+        <div id="chart_div"></div>
+        </body>
     <?php var_dump($data) ?>
     <?php else: ?>
     <?php echo "Nothing to show"?>
