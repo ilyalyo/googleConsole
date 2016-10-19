@@ -12,7 +12,7 @@ function pageHeader($title)
   <html>
   <head>
     <title>" . $title . "</title>
-    <link href='/styles/style.css' rel='stylesheet' type='text/css' />
+    <link href='../styles/style.css' rel='stylesheet' type='text/css' />
     <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js\"></script>
     
 
