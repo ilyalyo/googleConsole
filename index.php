@@ -284,7 +284,7 @@ if ($client->getAccessToken()) {
                 data.addRows([
                     <?php
                         foreach ($data->getRows() as $row)
-echo "[ new Date('{$row->keys[0]}', $row->clicks, $row->impressions, $row->ctr, $row->position],";
+echo "[ new Date('{$row->keys[0]}'), $row->clicks, $row->impressions, $row->ctr, $row->position],";
                         ?>
                 ]);
 
