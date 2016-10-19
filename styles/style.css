@@ -115,3 +115,9 @@ pre.code {
 .api-key {
   background-color:#DDD;
 }
+
+#chart_div{
+  padding-top: 20px;
+  display: table;
+  margin: 0 auto;
+}
