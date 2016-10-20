@@ -4,8 +4,14 @@ echo pageHeader('Search Console');
 
 echo 'loading data...';
 var_dump($_SESSION['access_token']);
-var_dump($_SESSION['client']);
-echo 22;
+
+$client = new Google_Client();
+$client->setAuthConfig($oauth_credentials);
+$client->setRedirectUri($redirect_uri);
+$client->addScope("https://www.googleapis.com/auth/webmasters");
+$client->setAccessToken($_SESSION['access_token']);
+
+
 
 /** @var Google_Client $client */
 $client = $_SESSION['client'];
