@@ -58,9 +58,9 @@ if (isset($_REQUEST['logout'])) {
 if (isset($_GET['code'])) {
     $token = $client->fetchAccessTokenWithAuthCode($_GET['code']);
     $client->setAccessToken($token);
-
     // store in the session also
     $_SESSION['access_token'] = $token;
+    $_SESSION['client_id'] = $client->getClientId();
     header("Location: " . "load_data.php");
     exit();
 }

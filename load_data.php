@@ -10,6 +10,7 @@ if(!isset($_SESSION['access_token'])) {
 }
 
 var_dump($_SESSION['access_token']);
+var_dump($_SESSION['client_id']);
 
 $client = new Google_Client();
 $client->setAuthConfig($oauth_credentials);
@@ -17,21 +18,27 @@ $client->setRedirectUri($redirect_uri);
 $client->addScope("https://www.googleapis.com/auth/webmasters");
 $client->setAccessToken($_SESSION['access_token']);
 $service = new Google_Service_Webmasters($client);
-var_dump($service->sites->listSites()->getSiteEntry());
 
-$searchRequest = new Google_Service_Webmasters_SearchAnalyticsQueryRequest();
+$websites = [];
+foreach ($service->sites->listSites()->getSiteEntry() as $siteEntry)
+    $websites [] = $siteEntry['siteUrl'];
 
-$startDate = date('Y-m-d');
-$endDate = date('Y-m-d', strtotime("-1 month"));
+foreach ($websites as $website){
+    $searchRequest = new Google_Service_Webmasters_SearchAnalyticsQueryRequest();
 
-$searchRequest->setStartDate($startDate);
-$searchRequest->setEndDate($endDate);
+    $startDate = date('Y-m-d');
+    $endDate = date('Y-m-d', strtotime("-1 month"));
 
-try {
-    $searchRequest->setDimensions(["date", "country", "device", "query", "page"]);
-    $data = $service->searchanalytics->query($_GET['website'], $searchRequest);
-    var_dump($data);
-}
-catch (Exception $e){
-    echo $e->getMessage();
+    $searchRequest->setStartDate($startDate);
+    $searchRequest->setEndDate($endDate);
+
+    try {
+        $searchRequest->setDimensions(["date", "country", "device", "query", "page"]);
+        $data = $service->searchanalytics->query($website, $searchRequest);
+        var_dump($data);
+    }
+    catch (Exception $e){
+        echo $e->getMessage();
+    }
+    die();
 }
