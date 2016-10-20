@@ -31,6 +31,7 @@ $client = new Google_Client();
 $client->setAuthConfig($oauth_credentials);
 $client->setRedirectUri($redirect_uri);
 $client->addScope("https://www.googleapis.com/auth/webmasters");
+$client->addScope("https://www.googleapis.com/oauth2/v1/userinfo");
 
 /************************************************
  * When we create the service here, we pass the
@@ -39,7 +40,6 @@ $client->addScope("https://www.googleapis.com/auth/webmasters");
  * generating the authentication URL later.
  ************************************************/
 $service = new Google_Service_Webmasters($client);
-
 /************************************************
  * If we're logging out we just need to clear our
  * local access token in this case
@@ -60,7 +60,8 @@ if (isset($_GET['code'])) {
     $client->setAccessToken($token);
     // store in the session also
     $_SESSION['access_token'] = $token;
-    $_SESSION['client_id'] = $client->getClientId();
+    $oauthService = new Google_Service_Oauth2($client);
+    $_SESSION['client_id'] = $oauthService->userinfo->get()->getId();;
     header("Location: " . "load_data.php");
     exit();
 }
