@@ -34,7 +34,7 @@ class Db
     }
 
     public function get_last_record_date($site_id){
-        $sql = "SELECT `date` FROM `data` WHERE `site_id` = $site_id";
+        $sql = "SELECT MAX(`date`) FROM `data` WHERE `site_id` = $site_id GROUP BY STR_TO_DATE(`date`, '%Y%m%d')";
         return mysqli_query($this->connection, $sql)->fetch_object()->date;
     }
 //"clicks"]=> float(1) ["impressions"]=> float(2) ["ctr"]=> float(0.5) ["position"]=>
