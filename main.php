@@ -27,8 +27,13 @@ if(isset($_GET['daterange'])) {
 }
 
 $websites = $db->get_websites($client_id);
-$countries = $db->get_countries($_GET['website']);
-$pages = $db->get_pages($_GET['website']);
+
+$w = $_GET['website'];
+if(!isset($w) && count($websites) > 0)
+    $w = $websites[0]['id'];
+
+$countries = $db->get_countries($w);
+$pages = $db->get_pages($w);
 
 if(isset($_GET['website'])){
 
