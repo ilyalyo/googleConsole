@@ -1,6 +1,13 @@
 <?php
-include_once("restd.php");
+include_once __DIR__ . '/vendor/autoload.php';
+include_once "templates/base.php";
+
 echo pageHeader('Search Console');
+
+if(!isset($_SESSION['access_token'])) {
+    session_unset();
+    header("location: index.php");
+}
 
 echo 'loading data...';
 var_dump($_SESSION['access_token']);
