@@ -59,8 +59,7 @@ if(isset($_GET['website'])){
         rtrim($sql, ',');
         $sql .= ")";
     }
-    var_dump($sql);
-    $db->runSql($sql);
+    $data = $db->runSql($sql);
 }
 ?>
 <a class='logout' href='?logout'>Logout</a>
@@ -197,8 +196,8 @@ if(isset($_GET['website'])){
             data.addColumn('number', "Position");
             data.addRows([
                 <?php
-                foreach ($data->getRows() as $row)
-                    echo "[ new Date('{$row->keys[0]}'), $row->clicks, $row->impressions, $row->ctr, $row->position],";
+                foreach ($data as $row)
+                    echo "[ new Date('{$row['date']}'), {$row['clicks']}, {$row['impressions']}, {$row['ctr']}, {$row['position']}],";
                 ?>
             ]);
 
