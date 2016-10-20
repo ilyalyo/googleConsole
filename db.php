@@ -14,6 +14,7 @@ class Db
     private function connect()
     {
         $this->connection = mysqli_connect('localhost', $this::DB_USER, $this::DB_PASS, $this::DB_NAME);
+        $this->connection ->set_charset("utf8");
         if (mysqli_connect_errno()) {
             echo "Failed to connect to MySQL";
         }
