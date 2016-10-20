@@ -46,7 +46,7 @@ if(isset($_GET['website'])){
         foreach ($_GET['device'] as $device)
             $sql .= "'" . $device . "',";
 
-        rtrim($sql, ',');
+        $sql = rtrim($sql, ',');
         $sql .= ")";
     }
 
@@ -56,7 +56,7 @@ if(isset($_GET['website'])){
         foreach ($_GET['country'] as $country)
             $sql .= "'" . $country . "',";
 
-        rtrim($sql, ',');
+        $sql = rtrim($sql, ',');
         $sql .= ")";
     }
 
