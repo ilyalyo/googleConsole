@@ -46,7 +46,7 @@ if(isset($_GET['website'])){
 
     $sql .= ' GROUP BY `date`';
     $sql .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
-    var_dump($sql);
+    //var_dump($sql);
     $data = $db->runSql($sql);
 }
 
@@ -226,7 +226,7 @@ function arrToSql($param){
     <!--Div that will hold the pie chart-->
     <div id="chart_div"></div>
     </body>
-    <?php var_dump($data) ?>
+    <?php /*var_dump($data)*/ ?>
 <?php else: ?>
     <?php echo "Nothing to show"?>
 <?php endif; ?>
