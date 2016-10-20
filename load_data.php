@@ -66,7 +66,7 @@ foreach ($websites as $website){
             $tmpEDate = $endDate;
 
         makeRequest($tmpSDate->format($dateFormat), $tmpEDate->format($dateFormat), $site_id, $website);
-
+        usleep(200000);
         $tmpSDate->modify('+7 day');
     }
 }

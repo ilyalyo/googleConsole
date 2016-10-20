@@ -40,9 +40,12 @@ class Db
 //"clicks"]=> float(1) ["impressions"]=> float(2) ["ctr"]=> float(0.5) ["position"]=>
     public function add_record($site_id, $date, $country, $device, $query, $page, $clicks, 
                                $impressions, $ctr, $position){
+        $safe_query = mysqli_real_escape_string($this->connection, $query);
+        $safe_page = mysqli_real_escape_string($this->connection, $page);
+        
         $sql = "INSERT INTO `data` (`site_id`,`date`, `country`, `device`, `query`, `page`, 
 `clicks`, `impressions`, `ctr`, `position`) 
-        VALUES ($site_id,'$date', '$country', '$device', '$query', '$page', 
+        VALUES ($site_id,'$date', '$country', '$device', '$safe_query', '$safe_page', 
         $clicks, $impressions, $ctr, $position)";
         if (!mysqli_query($this->connection, $sql))
             die(mysqli_error($this->connection));
