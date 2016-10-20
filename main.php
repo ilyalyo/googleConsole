@@ -58,8 +58,8 @@ if(isset($_GET['website'])){
 
         rtrim($sql, ',');
         $sql .= ")";
-        $sql .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
     }
+    $sql .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
     $data = $db->runSql($sql);
 }
 ?>
