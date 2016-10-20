@@ -1,10 +1,10 @@
 <?php
-echo 'loading data...';
+include_once("restd.php");
 
-if (!(isset($_SESSION['access_token']) && $_SESSION['access_token'])) {
-    header("Location: " . "index.php");
-    exit();
-}
+echo 'loading data...';
+var_dump($_SESSION['access_token']);
+var_dump($_SESSION['client']);
+echo 22;
 
 /** @var Google_Client $client */
 $client = $_SESSION['client'];
