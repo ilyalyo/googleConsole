@@ -52,7 +52,7 @@ foreach ($websites as $website){
         $data = $service->searchanalytics->query($website, $searchRequest);
         var_dump($data);
         foreach ($data->getRows() as $row){
-            $db->add_record($site_id, $row->keys[0], $row->keys[1], $row->keys[2], $row->keys[3],
+            $db->add_record($site_id, $row->keys[0], $row->keys[1], $row->keys[2], $row->keys[3], $row->keys[4],
                 $row->clicks, $row->impressions, $row->ctr, $row->position);
         }
 
