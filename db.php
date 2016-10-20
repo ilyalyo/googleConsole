@@ -50,4 +50,19 @@ class Db
         if (!mysqli_query($this->connection, $sql))
             die(mysqli_error($this->connection));
     }
+
+    public function get_websites($client_id){
+        $sql = "SELECT `site_url`, `id` FROM `clients` WHERE `client_id` = $client_id";
+        $query = mysqli_query($this->connection, $sql);
+        $result = [];
+        while ($row = mysqli_fetch_row($query))
+            $result [] = [ "id" => $row['id'], "site_url" => $row['site_url']];
+        return $result;
+    }
+
+    public function get_countries($site_id){
+        $sql = "SELECT DISTINCT `country` FROM `data` WHERE `site_id` = $site_id";
+        $query = mysqli_query($this->connection, $sql);
+        return mysqli_fetch_array($query);
+    }
 }

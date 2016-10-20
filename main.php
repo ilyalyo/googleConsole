@@ -9,15 +9,9 @@ if(!isset($_SESSION['access_token']) || isset($_REQUEST['logout'])) {
     session_unset();
     header("location: index.php");
 }
-
-$client = new Google_Client();
-$client->setAuthConfig($oauth_credentials);
-$client->setRedirectUri($redirect_uri);
-$client->addScope("https://www.googleapis.com/auth/webmasters");
-$client->setAccessToken($_SESSION['access_token']);
 $client_id = $_SESSION['client_id'];
 
-$service = new Google_Service_Webmasters($client);
+$db = new Db();
 
 $websites = [];
 $startDate = "";
@@ -32,27 +26,38 @@ if(isset($_GET['daterange'])) {
     }
 }
 
-
-foreach ($service->sites->listSites()->getSiteEntry() as $siteEntry)
-    $websites [] = $siteEntry['siteUrl'];
+$websites = $db->get_websites($client_id);
 
 if(isset($_GET['website'])){
-    $searchRequest = new Google_Service_Webmasters_SearchAnalyticsQueryRequest();
+ /*   foreach ($db->get_countries()
+             $websites [] = $siteEntry['siteUrl'];*/
 
-    if(!empty($startDate) && !empty($endDate)) {
-        $searchRequest->setStartDate($startDate);
-        $searchRequest->setEndDate($endDate);
+    $sql = "SELECT * FROM `data` WHERE";
+
+    if(!empty($startDate) && !empty($endDate))
+        $sql .= " STR_TO_DATE(`date`, '%Y%m%d') 
+        BETWEEN STR_TO_DATE('$startDate', '%Y%m%d') AND STR_TO_DATE('$endDate', '%Y%m%d')";
+    else
+        $sql .= " 1=1";
+
+    if(!empty($_GET['device'])) {
+        $sql .= " AND device IN(";
+
+        foreach ($_GET['device'] as $device)
+            $sql .= $device . ",";
+
+        rtrim($sql, ',');
+        $sql .= ")";
     }
 
-    if(isset($_GET['searchType']))
-        $searchRequest->setSearchType($_GET['searchType']);
+    if(!empty($_GET['country'])) {
+        $sql .= " AND country IN(";
 
-    try {
-        $searchRequest->setDimensions(["date"]);
-        $data = $service->searchanalytics->query($_GET['website'], $searchRequest);
-    }
-    catch (Exception $e){
-        echo $e->getMessage();
+        foreach ($_GET['country'] as $country)
+            $sql .= $country . ",";
+
+        rtrim($sql, ',');
+        $sql .= ")";
     }
 }
 ?>
@@ -64,8 +69,8 @@ if(isset($_GET['website'])){
             <label for="website">Websites</label>
             <select name="website" id="website" class="selectpicker form-control">
                 <?php
-                foreach ($websites as $url)
-                    echo "<option value='$url'>$url</option>";
+                foreach ($websites as $site)
+                    echo "<option value='{$site['id']}'>{$site['site_url']}</option>";
                 ?>
             </select>
         </div>

@@ -71,7 +71,7 @@ foreach ($websites as $website){
     }
 }
 
-echo "<a href='main.php'>Next</a>";
+echo "<br><br><a href='main.php'>Next</a>";
 
 header("location: main.php");
 
