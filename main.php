@@ -2,6 +2,7 @@
 include_once __DIR__ . '/vendor/autoload.php';
 include_once "templates/base.php";
 include_once "db.php";
+use \Ublaboo\DataGrid\DataGrid as DataGrid;
 
 echo pageHeader('Search Console');
 
@@ -231,7 +232,14 @@ function arrToSql($param){
 
     <body>
     <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
+    <div id="chart_div">
+
+        <?php
+        $grid = new DataGrid($this, 'grid');
+
+        $grid->setDataSource($data);
+        $grid->addColumnText('date', 'Date');
+        ?>
     </body>
     <?php /*var_dump($data)*/ ?>
 <?php else: ?>
