@@ -23,6 +23,8 @@ $client_id = $_SESSION['client_id'];
 $service = new Google_Service_Webmasters($client);
 
 $websites = [];
+$dateFormat = 'Y-m-d';
+
 foreach ($service->sites->listSites()->getSiteEntry() as $siteEntry)
     $websites [] = $siteEntry['siteUrl'];
 
@@ -36,10 +38,47 @@ foreach ($websites as $website){
 
     $startDate = $db->get_last_record_date($site_id);
 
-    if($startDate == null)
-        $startDate = date('Y-m-d', strtotime("-3 month"));
+    if($startDate == null){
+        $startDate = new DateTime();
+        $startDate->modify('-3 month');
+    }
+    else
+        $startDate = new DateTime($startDate);
 
-    $endDate = date('Y-m-d', strtotime("-1 day"));
+    $endDate = new DateTime();
+    $endDate->modify('-1 day');
+
+    $interval = date_diff($startDate, $endDate);
+    $daysBetween = $interval->format('%a');
+
+
+    var_dump($startDate);
+    var_dump($endDate);
+    var_dump($daysBetween);
+    die();
+    //don't need to update data
+    if($daysBetween == 0)
+        continue;
+
+    $tmpSDate = clone $startDate;
+    $tmpEDate = clone $startDate;
+
+    while ($tmpSDate <= $endDate)
+    {
+        $tmpEDate->modify('+7 day');
+
+        if($tmpEDate > $endDate)
+            $tmpEDate = $endDate;
+
+        makeRequest($tmpSDate, $tmpEDate, $site_id, $website);
+
+        $tmpSDate->modify('+7 day');
+    }
+}
+
+function makeRequest($startDate, $endDate, $site_id, $website){
+    global $service;
+    global $db;
 
     $searchRequest = new Google_Service_Webmasters_SearchAnalyticsQueryRequest();
 
@@ -47,7 +86,7 @@ foreach ($websites as $website){
     $searchRequest->setEndDate($endDate);
 
     try {
-        $searchRequest->setRowLimit(5);
+        $searchRequest->setRowLimit(5000);
         $searchRequest->setDimensions(["date", "country", "device", "query", "page"]);
         $data = $service->searchanalytics->query($website, $searchRequest);
         var_dump($data);
@@ -60,5 +99,4 @@ foreach ($websites as $website){
     catch (Exception $e){
         echo $e->getMessage();
     }
-    die();
 }
