@@ -52,11 +52,11 @@ class Db
     }
 
     public function get_websites($client_id){
-        $sql = "SELECT `site_url`, `id` FROM `clients` WHERE `client_id` = $client_id";
+        $sql = "SELECT `id`, `site_url`FROM `clients` WHERE `client_id` = $client_id";
         $query = mysqli_query($this->connection, $sql);
         $result = [];
         while ($row = mysqli_fetch_row($query))
-            $result [] = [ "id" => $row['id'], "site_url" => $row['site_url']];
+            $result [] = [ "id" => $row[0], "site_url" => $row[1]];
         return $result;
     }
 
