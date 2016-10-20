@@ -61,9 +61,18 @@ class Db
     }
 
     public function get_countries($site_id){
-        $sql = "SELECT DISTINCT `country` FROM `data` WHERE `site_id` = $site_id";
+        $sql = "SELECT SUM(clicks) as clicks, `country` FROM `data` 
+WHERE `site_id` = $site_id 
+GROUP BY country HAVING SUM(clicks) > 0 ORDER BY 1 DESC";
         $query = mysqli_query($this->connection, $sql);
-        return mysqli_fetch_array($query);
+        $result = [];
+        while ($row = mysqli_fetch_assoc($query)){
+            $result [] = [
+                "clicks" => $row['clicks'],
+                "country" => $row['country'],
+            ];
+        }
+        return $result;
     }
     public function runSql($sql){
         $query = mysqli_query($this->connection, $sql);

@@ -27,10 +27,9 @@ if(isset($_GET['daterange'])) {
 }
 
 $websites = $db->get_websites($client_id);
+$countries = $db->get_countries($_GET['website']);
 
 if(isset($_GET['website'])){
-    /*foreach ($db->get_countries() as $country)
-        $websites [] = $siteEntry['siteUrl'];*/
 
     $sql = "SELECT `date`, `clicks`, `impressions`, `ctr`, `position` FROM `data` WHERE";
 
@@ -119,6 +118,10 @@ if(isset($_GET['website'])){
         <div class="col-md-1">
             <label for="country">Country</label>
             <select name="country[]" id="country" class="selectpicker form-control" multiple>
+                <?php
+                foreach ($countries as $country)
+                    echo "<option value='{$country['country']}'>{$country['country']} - {$country['clicks']}</option>";
+                ?>
             </select>
         </div>
         <script type="text/javascript">
