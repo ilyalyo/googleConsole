@@ -5,11 +5,10 @@ include_once "db.php";
 
 echo pageHeader('Search Console');
 
-if(!isset($_SESSION['access_token'])) {
+if(!isset($_SESSION['access_token']) || isset($_REQUEST['logout'])) {
     session_unset();
     header("location: index.php");
 }
-
 
 $client = new Google_Client();
 $client->setAuthConfig($oauth_credentials);
