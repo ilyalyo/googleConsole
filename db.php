@@ -65,14 +65,21 @@ class Db
         $query = mysqli_query($this->connection, $sql);
         return mysqli_fetch_array($query);
     }
-    
     public function runSql($sql){
         $query = mysqli_query($this->connection, $sql);
         $result = [];
-        while ($row = mysqli_fetch_row($query)){
-            var_dump($row);
-            die();
-            $result [] = [ "id" => $row[0], "site_url" => $row[1]];
+        while ($row = mysqli_fetch_assoc($query)){
+            $result [] = [
+                "date" => $row['date'],
+                "country" => $row['country'],
+                "device" => $row['device'],
+                "query" => $row['query'],
+                "page" => $row['page'],
+                "clicks" => $row['clicks'],
+                "impressions" => $row['impressions'],
+                "ctr" => $row['ctr'],
+                "position" => $row['position'],
+            ];
         }
         return $result;
     }
