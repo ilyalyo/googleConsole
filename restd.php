@@ -1,5 +1,7 @@
 <?php
-session_start();
+include_once __DIR__ . '/vendor/autoload.php';
+include_once "templates/base.php";
+
 if(!isset($_SESSION['access_token']) || !isset($_SESSION['client'])) {
     session_unset();
     header("location: index.php");
