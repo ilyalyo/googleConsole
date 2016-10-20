@@ -21,11 +21,7 @@ class Db
 
     public function is_client_website_exist($client_id, $website){
         $sql = "SELECT `id` FROM clients WHERE `client_id` = '$client_id' AND site_url = '$website'";
-        $query = mysqli_query($this->connection, $sql);
-        $rows = mysqli_num_rows($query);
-        if( $rows > 0)
-            return $query;
-        return false;
+        return mysqli_query($this->connection, $sql)->fetch_object()->id;
     }
 
     public function add_website($client_id, $website)
@@ -38,7 +34,7 @@ class Db
 
     public function get_last_record_date($site_id){
         $sql = "SELECT `date` FROM `data` WHERE `site_id` = $site_id";
-        return mysqli_query($this->connection, $sql);
+        return mysqli_query($this->connection, $sql)->fetch_object()->date;
     }
 //"clicks"]=> float(1) ["impressions"]=> float(2) ["ctr"]=> float(0.5) ["position"]=>
     public function add_record($site_id, $date, $country, $device, $query, $page, $clicks, 

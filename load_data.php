@@ -31,7 +31,7 @@ $db = new Db();
 foreach ($websites as $website){
     $site_id = $db->is_client_website_exist($client_id, $website);
 
-    if($site_id == false)
+    if($site_id == null)
         $site_id = $db->add_website($client_id, $website);
 
     $startDate = $db->get_last_record_date($site_id);
