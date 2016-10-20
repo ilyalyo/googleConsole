@@ -62,7 +62,7 @@ if(isset($_GET['website'])){
 
     $sql .= ' GROUP BY `date`';
     $sql .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
-    var_dump($sql);die();
+    var_dump($sql);
     $data = $db->runSql($sql);
 }
 ?>
