@@ -32,7 +32,7 @@ if(isset($_GET['website'])){
     /*foreach ($db->get_countries() as $country)
         $websites [] = $siteEntry['siteUrl'];*/
 
-    $sql = "SELECT * FROM `data` WHERE";
+    $sql = "SELECT `date`, `clicks`, `impressions`, `ctr`, `position` FROM `data` WHERE";
 
     if(!empty($startDate) && !empty($endDate))
         $sql .= " STR_TO_DATE(`date`, '%Y-%m-%d') 
@@ -59,6 +59,8 @@ if(isset($_GET['website'])){
         rtrim($sql, ',');
         $sql .= ")";
     }
+
+    $sql .= 'GROUP BY `date`';
     $sql .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
     $data = $db->runSql($sql);
 }
