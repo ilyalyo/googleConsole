@@ -51,16 +51,12 @@ foreach ($websites as $website){
     $interval = date_diff($startDate, $endDate);
     $daysBetween = $interval->format('%a');
 
-
-    var_dump($startDate);
-    var_dump($endDate);
-    var_dump($daysBetween);
-    die();
     //don't need to update data
     if($daysBetween == 0)
         continue;
 
     $tmpSDate = clone $startDate;
+    $tmpSDate->modify('+1 day');
     $tmpEDate = clone $startDate;
 
     while ($tmpSDate <= $endDate)
@@ -70,7 +66,7 @@ foreach ($websites as $website){
         if($tmpEDate > $endDate)
             $tmpEDate = $endDate;
 
-        makeRequest($tmpSDate, $tmpEDate, $site_id, $website);
+//        makeRequest($tmpSDate, $tmpEDate, $site_id, $website);
 
         $tmpSDate->modify('+7 day');
     }
