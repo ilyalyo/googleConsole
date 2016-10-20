@@ -71,6 +71,8 @@ foreach ($websites as $website){
     }
 }
 
+echo "<a href='main.php'>Next</a>";
+
 header("location: main.php");
 
 function makeRequest($startDate, $endDate, $site_id, $website){
