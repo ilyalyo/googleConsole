@@ -29,8 +29,8 @@ if(isset($_GET['daterange'])) {
 $websites = $db->get_websites($client_id);
 
 if(isset($_GET['website'])){
- /*   foreach ($db->get_countries()
-             $websites [] = $siteEntry['siteUrl'];*/
+    /*foreach ($db->get_countries() as $country)
+        $websites [] = $siteEntry['siteUrl'];*/
 
     $sql = "SELECT * FROM `data` WHERE";
 
@@ -59,6 +59,8 @@ if(isset($_GET['website'])){
         rtrim($sql, ',');
         $sql .= ")";
     }
+    var_dump($sql);
+    $db->runSql($sql);
 }
 ?>
 <a class='logout' href='?logout'>Logout</a>

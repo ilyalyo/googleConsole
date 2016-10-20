@@ -65,4 +65,15 @@ class Db
         $query = mysqli_query($this->connection, $sql);
         return mysqli_fetch_array($query);
     }
+    
+    public function runSql($sql){
+        $query = mysqli_query($this->connection, $sql);
+        $result = [];
+        while ($row = mysqli_fetch_row($query)){
+            var_dump($row);
+            die();
+            $result [] = [ "id" => $row[0], "site_url" => $row[1]];
+        }
+        return $result;
+    }
 }
