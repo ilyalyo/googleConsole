@@ -65,7 +65,7 @@ foreach ($websites as $website){
         if($tmpEDate > $endDate)
             $tmpEDate = $endDate;
 
-        makeRequest($tmpSDate, $tmpEDate, $site_id, $website);
+        makeRequest($tmpSDate->format($dateFormat), $tmpEDate->format($dateFormat), $site_id, $website);
 
         $tmpSDate->modify('+7 day');
     }
