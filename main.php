@@ -1,5 +1,6 @@
 <?php
 include_once("restd.php");
+echo pageHeader('Search Console');
 
 /** @var Google_Client $client */
 $client = $_SESSION['client'];

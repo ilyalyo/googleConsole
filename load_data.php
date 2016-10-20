@@ -1,5 +1,6 @@
 <?php
 include_once("restd.php");
+echo pageHeader('Search Console');
 
 echo 'loading data...';
 var_dump($_SESSION['access_token']);

@@ -60,8 +60,8 @@ if (isset($_GET['code'])) {
     $client->setAccessToken($token);
 
     // store in the session also
-    $_SESSION['access_token'] = 1;
-    $_SESSION['client'] = 2;
+    $_SESSION['access_token'] = $token;
+    $_SESSION['client'] = $client;
 
     header("Location: " . "load_data.php");
     exit();
