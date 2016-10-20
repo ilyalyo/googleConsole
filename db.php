@@ -37,7 +37,7 @@ class Db
         $sql = "SELECT MAX(`date`) as `date`  FROM `data` WHERE `site_id` = $site_id GROUP BY STR_TO_DATE(`date`, '%Y%m%d')";
         return mysqli_query($this->connection, $sql)->fetch_object()->date;
     }
-//"clicks"]=> float(1) ["impressions"]=> float(2) ["ctr"]=> float(0.5) ["position"]=>
+
     public function add_record($site_id, $date, $country, $device, $query, $page, $clicks, 
                                $impressions, $ctr, $position){
         $safe_query = mysqli_real_escape_string($this->connection, $query);

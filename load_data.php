@@ -3,8 +3,7 @@ include_once __DIR__ . '/vendor/autoload.php';
 include_once "templates/base.php";
 include_once "db.php";
 
-echo pageHeader('Saving Data..');
-
+echo pageHeader('Updating Data..');
 if(!isset($_SESSION['access_token'])) {
     session_unset();
     header("location: index.php");
@@ -29,6 +28,7 @@ foreach ($service->sites->listSites()->getSiteEntry() as $siteEntry)
 $db = new Db();
 
 foreach ($websites as $website){
+    echo "<h2>Updating $website</h2>";
     $site_id = $db->is_client_website_exist($client_id, $website);
 
     if($site_id == null)
@@ -64,12 +64,14 @@ foreach ($websites as $website){
 
         if($tmpEDate > $endDate)
             $tmpEDate = $endDate;
-
+        echo "<p>{$tmpSDate->format($dateFormat)} - {$tmpEDate->format($dateFormat)}</p>";
         makeRequest($tmpSDate->format($dateFormat), $tmpEDate->format($dateFormat), $site_id, $website);
         usleep(200000);
         $tmpSDate->modify('+7 day');
     }
 }
+
+header("location: main.php");
 
 function makeRequest($startDate, $endDate, $site_id, $website){
     global $service;

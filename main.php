@@ -1,27 +1,30 @@
 <?php
-include_once("restd.php");
+include_once __DIR__ . '/vendor/autoload.php';
+include_once "templates/base.php";
+include_once "db.php";
+
 echo pageHeader('Search Console');
 
-/** @var Google_Client $client */
-$client = $_SESSION['client'];
+if(!isset($_SESSION['access_token'])) {
+    session_unset();
+    header("location: index.php");
+}
+
+
+$client = new Google_Client();
+$client->setAuthConfig($oauth_credentials);
+$client->setRedirectUri($redirect_uri);
+$client->addScope("https://www.googleapis.com/auth/webmasters");
+$client->setAccessToken($_SESSION['access_token']);
+$client_id = $_SESSION['client_id'];
 
 $service = new Google_Service_Webmasters($client);
 
-
-/************************************************
-If we're signed in and have a request to shorten
-a URL, then we create a new URL object, set the
-unshortened URL, and call the 'insert' method on
-the 'url' resource. Note that we re-store the
-access_token bundle, just in case anything
-changed during the request - the main thing that
-might happen here is the access token itself is
-refreshed if the application has offline access.
- ************************************************/
 $websites = [];
 $startDate = "";
 $endDate = "";
 $data = null;
+
 if(isset($_GET['daterange'])) {
     $arrDate = explode(' - ', $_GET['daterange']);
     if (count($arrDate) > 1) {
@@ -30,30 +33,27 @@ if(isset($_GET['daterange'])) {
     }
 }
 
-if ($client->getAccessToken()) {
 
-    foreach ($service->sites->listSites()->getSiteEntry() as $siteEntry)
-        $websites [] = $siteEntry['siteUrl'];
+foreach ($service->sites->listSites()->getSiteEntry() as $siteEntry)
+    $websites [] = $siteEntry['siteUrl'];
 
-    if(isset($_GET['website'])){
-        $searchRequest = new Google_Service_Webmasters_SearchAnalyticsQueryRequest();
+if(isset($_GET['website'])){
+    $searchRequest = new Google_Service_Webmasters_SearchAnalyticsQueryRequest();
 
-        if(!empty($startDate) && !empty($endDate)) {
-            $searchRequest->setStartDate($startDate);
-            $searchRequest->setEndDate($endDate);
-        }
+    if(!empty($startDate) && !empty($endDate)) {
+        $searchRequest->setStartDate($startDate);
+        $searchRequest->setEndDate($endDate);
+    }
 
-        if(isset($_GET['searchType']))
-            $searchRequest->setSearchType($_GET['searchType']);
+    if(isset($_GET['searchType']))
+        $searchRequest->setSearchType($_GET['searchType']);
 
-        try {
-            $searchRequest->setDimensions(["date"]);
-            $data = $service->searchanalytics->query($_GET['website'], $searchRequest);
-        }
-        catch (Exception $e){
-            echo $e->getMessage();
-        }
-        $_SESSION['access_token'] = $client->getAccessToken();
+    try {
+        $searchRequest->setDimensions(["date"]);
+        $data = $service->searchanalytics->query($_GET['website'], $searchRequest);
+    }
+    catch (Exception $e){
+        echo $e->getMessage();
     }
 }
 ?>
