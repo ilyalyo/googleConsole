@@ -2,14 +2,13 @@
 include_once __DIR__ . '/vendor/autoload.php';
 include_once "templates/base.php";
 
-echo pageHeader('Search Console');
+echo pageHeader('Saving Data..');
 
 if(!isset($_SESSION['access_token'])) {
     session_unset();
     header("location: index.php");
 }
 
-echo 'loading data...';
 var_dump($_SESSION['access_token']);
 
 $client = new Google_Client();
@@ -20,19 +19,19 @@ $client->setAccessToken($_SESSION['access_token']);
 $service = new Google_Service_Webmasters($client);
 var_dump($service->sites->listSites()->getSiteEntry());
 
+$searchRequest = new Google_Service_Webmasters_SearchAnalyticsQueryRequest();
 
-/** @var Google_Client $client */
-$client = $_SESSION['client'];
+$startDate = date('Y-m-d');
+$endDate = date('Y-m-d', strtotime("-1 month"));
 
-/************************************************
- * When we create the service here, we pass the
- * client to it. The client then queries the service
- * for the required scopes, and uses that when
- * generating the authentication URL later.
- ************************************************/
-$service = new Google_Service_Webmasters($client);
+$searchRequest->setStartDate($startDate);
+$searchRequest->setEndDate($endDate);
 
-
-sleep(1000);
-header("Location: " . "main.php");
-exit();
+try {
+    $searchRequest->setDimensions(["date", "country", "device", "query", "page"]);
+    $data = $service->searchanalytics->query($_GET['website'], $searchRequest);
+    var_dump($data);
+}
+catch (Exception $e){
+    echo $e->getMessage();
+}
