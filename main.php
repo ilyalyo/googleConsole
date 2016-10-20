@@ -35,8 +35,8 @@ if(isset($_GET['website'])){
     $sql = "SELECT * FROM `data` WHERE";
 
     if(!empty($startDate) && !empty($endDate))
-        $sql .= " STR_TO_DATE(`date`, '%Y%m%d') 
-        BETWEEN STR_TO_DATE('$startDate', '%Y%m%d') AND STR_TO_DATE('$endDate', '%Y%m%d')";
+        $sql .= " STR_TO_DATE(`date`, '%Y-%m-%d') 
+        BETWEEN STR_TO_DATE('$startDate', '%Y-%m-%d') AND STR_TO_DATE('$endDate', '%Y-%m-%d')";
     else
         $sql .= " 1=1";
 
