@@ -54,8 +54,7 @@ function arrToSql($param){
     $sql = "";
     if(!empty($_GET[$param])) {
         $sql .= " AND $param IN(";
-        $sql .= implode(',', $_GET[$param]);
-        $sql = rtrim($sql, ',');
+        $sql .= implode('\',\'', $_GET[$param]) . '\'';
         $sql .= ")";
     }
     return $sql;
