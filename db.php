@@ -28,7 +28,7 @@ class Db
     {
         $sql = "INSERT INTO clients (`client_id`,`site_url`) VALUES ('$client_id','$website')";
         if (!mysqli_query($this->connection, $sql))
-            die('Error');
+            die(mysqli_error($this->connection));
         return $this->connection->insert_id;
     }
 
@@ -44,6 +44,6 @@ class Db
         VALUES ($site_id,'$date', '$country', '$device', '$query', '$page', 
         $clicks, $impressions, $ctr, $position)";
         if (!mysqli_query($this->connection, $sql))
-            die('Error');
+            die(mysqli_error($this->connection));
     }
 }
