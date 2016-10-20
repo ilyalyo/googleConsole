@@ -39,7 +39,7 @@ foreach ($websites as $website){
     if($startDate == null){
         $startDate = new DateTime();
         //@todo set 3 month
-        $startDate->modify('-1 month');
+        $startDate->modify('-3 month');
     }
     else
         $startDate = new DateTime($startDate);
