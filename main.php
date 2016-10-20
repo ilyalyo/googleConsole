@@ -68,6 +68,7 @@ function arrToSql($param){
 <a class='logout' href='?logout'>Logout</a>
 
 <form id="url" method="GET" action="<?= $_SERVER['PHP_SELF'] ?>">
+    <div class="container">
     <div class="form-group row">
         <div class="col-md-2">
             <label for="website">Websites</label>
@@ -119,7 +120,7 @@ function arrToSql($param){
             $('#device').val(<?php echo '[\''.implode($_GET['device'], '\', \'').'\']' ;?>);
         </script>
 
-        <div class="col-md-1">
+        <div class="col-md-2">
             <label for="country">Country</label>
             <select name="country[]" id="country" class="selectpicker form-control" multiple>
                 <?php
@@ -141,6 +142,7 @@ function arrToSql($param){
                       </span>
             </div>
         </div>
+    </div>
     </div>
 </form>
 
