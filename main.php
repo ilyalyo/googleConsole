@@ -28,6 +28,7 @@ if(isset($_GET['daterange'])) {
 
 $websites = $db->get_websites($client_id);
 $countries = $db->get_countries($_GET['website']);
+$pages = $db->get_pages($_GET['website']);
 
 if(isset($_GET['website'])){
 
@@ -39,30 +40,25 @@ if(isset($_GET['website'])){
     else
         $sql .= " 1=1";
 
-    if(!empty($_GET['device'])) {
-        $sql .= " AND device IN(";
-
-        foreach ($_GET['device'] as $device)
-            $sql .= "'" . $device . "',";
-
-        $sql = rtrim($sql, ',');
-        $sql .= ")";
-    }
-
-    if(!empty($_GET['country'])) {
-        $sql .= " AND country IN(";
-
-        foreach ($_GET['country'] as $country)
-            $sql .= "'" . $country . "',";
-
-        $sql = rtrim($sql, ',');
-        $sql .= ")";
-    }
+    $sql .= arrToSql('device');
+    $sql .= arrToSql('country');
+    $sql .= arrToSql('page');
 
     $sql .= ' GROUP BY `date`';
     $sql .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
     var_dump($sql);
     $data = $db->runSql($sql);
+}
+
+function arrToSql($param){
+    $sql = "";
+    if(!empty($_GET[$param])) {
+        $sql .= " AND $param IN(";
+        $sql .= implode(',', $_GET[$param]);
+        $sql = rtrim($sql, ',');
+        $sql .= ")";
+    }
+    return $sql;
 }
 ?>
 <a class='logout' href='?logout'>Logout</a>
@@ -85,6 +81,10 @@ if(isset($_GET['website'])){
         <div class="col-md-2">
             <label for="page">Page</label>
             <select name="page[]" id="page" class="selectpicker form-control" multiple>
+                <?php
+                foreach ($pages as $page)
+                    echo "<option value='{$page['page']}'>{$page['page']} - {$page['clicks']}</option>";
+                ?>
             </select>
         </div>
         <script type="text/javascript">
@@ -93,7 +93,7 @@ if(isset($_GET['website'])){
 
         <div class="col-md-1">
             <label for="searchType">SearchType</label>
-            <select name="searchType" id="searchType" class="selectpicker form-control" >
+            <select name="searchType" id="searchType" class="selectpicker form-control" disabled>
                 <option value='web'>web</option>
                 <option value='image'>image</option>
                 <option value='video'>video</option>
@@ -128,10 +128,6 @@ if(isset($_GET['website'])){
             $('#country').val(<?php echo '[\''.implode($_GET['country'], '\', \'').'\']' ;?>);
         </script>
 
-        <div class="col-md-1">
-            <label for="alltime">All time</label>
-            <input type="checkbox" name="alltime" id="alltime" class=""/>
-        </div>
         <div class="col-md-3">
             <label for="daterange">Date Range</label>
             <div class="input-group">

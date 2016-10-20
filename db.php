@@ -74,6 +74,22 @@ GROUP BY country HAVING SUM(clicks) > 0 ORDER BY 1 DESC";
         }
         return $result;
     }
+
+    public function get_pages($site_id){
+        $sql = "SELECT SUM(clicks) as clicks, `page` FROM `data` 
+WHERE `site_id` = $site_id 
+GROUP BY page ORDER BY 1 DESC";
+        $query = mysqli_query($this->connection, $sql);
+        $result = [];
+        while ($row = mysqli_fetch_assoc($query)){
+            $result [] = [
+                "clicks" => $row['clicks'],
+                "page" => $row['page'],
+            ];
+        }
+        return $result;
+    }
+
     public function runSql($sql){
         $query = mysqli_query($this->connection, $sql);
         $result = [];
