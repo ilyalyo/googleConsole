@@ -10,8 +10,6 @@ if(!isset($_SESSION['access_token'])) {
     header("location: index.php");
 }
 
-var_dump($_SESSION['access_token']);
-var_dump($_SESSION['client_id']);
 
 $client = new Google_Client();
 $client->setAuthConfig($oauth_credentials);
@@ -40,7 +38,8 @@ foreach ($websites as $website){
 
     if($startDate == null){
         $startDate = new DateTime();
-        $startDate->modify('-3 month');
+        //@todo set 3 month
+        $startDate->modify('-1 month');
     }
     else
         $startDate = new DateTime($startDate);
@@ -66,7 +65,7 @@ foreach ($websites as $website){
         if($tmpEDate > $endDate)
             $tmpEDate = $endDate;
 
-//        makeRequest($tmpSDate, $tmpEDate, $site_id, $website);
+        makeRequest($tmpSDate, $tmpEDate, $site_id, $website);
 
         $tmpSDate->modify('+7 day');
     }
@@ -85,7 +84,6 @@ function makeRequest($startDate, $endDate, $site_id, $website){
         $searchRequest->setRowLimit(5000);
         $searchRequest->setDimensions(["date", "country", "device", "query", "page"]);
         $data = $service->searchanalytics->query($website, $searchRequest);
-        var_dump($data);
         foreach ($data->getRows() as $row){
             $db->add_record($site_id, $row->keys[0], $row->keys[1], $row->keys[2], $row->keys[3], $row->keys[4],
                 $row->clicks, $row->impressions, $row->ctr, $row->position);
