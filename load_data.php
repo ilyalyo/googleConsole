@@ -10,7 +10,8 @@ $client->setAuthConfig($oauth_credentials);
 $client->setRedirectUri($redirect_uri);
 $client->addScope("https://www.googleapis.com/auth/webmasters");
 $client->setAccessToken($_SESSION['access_token']);
-
+$service = new Google_Service_Webmasters($client);
+var_dump($service->sites->listSites()->getSiteEntry());
 
 
 /** @var Google_Client $client */
