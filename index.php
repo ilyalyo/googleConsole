@@ -48,6 +48,22 @@ $client->setRedirectUri($redirect_uri);
 $client->addScope("https://www.googleapis.com/auth/webmasters");
 
 /************************************************
+ * When we create the service here, we pass the
+ * client to it. The client then queries the service
+ * for the required scopes, and uses that when
+ * generating the authentication URL later.
+ ************************************************/
+$service = new Google_Service_Webmasters($client);
+
+/************************************************
+ * If we're logging out we just need to clear our
+ * local access token in this case
+ ************************************************/
+if (isset($_REQUEST['logout'])) {
+    unset($_SESSION['access_token']);
+}
+
+/************************************************
  * If we have a code back from the OAuth 2.0 flow,
  * we need to exchange that with the
  * Google_Client::fetchAccessTokenWithAuthCode()
@@ -60,6 +76,9 @@ if (isset($_GET['code'])) {
 
     // store in the session also
     $_SESSION['access_token'] = $token;
+    $_SESSION['client'] = $client;
+
+    header("Location: " . "load_data.php");
 }
 
 /************************************************
@@ -68,9 +87,6 @@ requests, else we generate an authentication URL.
  ************************************************/
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
     $client->setAccessToken($_SESSION['access_token']);
-    $_SESSION['client'] = $client;
-    header("Location: " . "load_data.php");
-    exit();
 } else {
     $authUrl = $client->createAuthUrl();
 }
