@@ -31,7 +31,7 @@ $client = new Google_Client();
 $client->setAuthConfig($oauth_credentials);
 $client->setRedirectUri($redirect_uri);
 $client->addScope("https://www.googleapis.com/auth/webmasters");
-$client->addScope("https://www.googleapis.com/oauth2/v1/userinfo");
+$client->addScope("https://www.googleapis.com/auth/userinfo.email");
 
 /************************************************
  * When we create the service here, we pass the
@@ -61,7 +61,7 @@ if (isset($_GET['code'])) {
     // store in the session also
     $_SESSION['access_token'] = $token;
     $oauthService = new Google_Service_Oauth2($client);
-    $_SESSION['client_id'] = $oauthService->userinfo->get()->getId();;
+    $_SESSION['client_id'] = $oauthService->userinfo->get()->getId();
     header("Location: " . "load_data.php");
     exit();
 }
