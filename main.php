@@ -35,24 +35,30 @@ if(!isset($w) && count($websites) > 0)
 $countries = $db->get_countries($w);
 $pages = $db->get_pages($w);
 
-if(isset($_GET['website'])){
+if(isset($_GET['website'])) {
 
+    $sql_graph = "SELECT `date`, SUM(`clicks`) as `clicks`,  SUM(`impressions`) as `impressions`,  
+AVG(NULLIF(`ctr` ,0)) as `ctr`,  AVG (`position`) as `position`  FROM `data` WHERE";
     $sql = "SELECT * FROM `data` WHERE";
 
-    if(!empty($startDate) && !empty($endDate))
-        $sql .= " STR_TO_DATE(`date`, '%Y-%m-%d') 
-        BETWEEN STR_TO_DATE('$startDate', '%Y-%m-%d') AND STR_TO_DATE('$endDate', '%Y-%m-%d')";
+    $q = "";
+    if (!empty($startDate) && !empty($endDate))
+        $q .= " STR_TO_DATE(`date`, '%Y-%m-%d') 
+            BETWEEN STR_TO_DATE('$startDate', '%Y-%m-%d') AND STR_TO_DATE('$endDate', '%Y-%m-%d')";
     else
-        $sql .= " 1=1";
+        $q .= " 1=1";
 
-    $sql .= arrToSql('device');
-    $sql .= arrToSql('country');
-    $sql .= arrToSql('page');
+    $q .= arrToSql('device');
+    $q .= arrToSql('country');
+    $q .= arrToSql('page');
 
-    $sql .= ' GROUP BY `date`';
-    $sql .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
-    //var_dump($sql);
+    $sql_graph .= $q . ' GROUP BY `date`';
+    $sql_graph .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
+    $sql .= $q. ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
+
+    var_dump($sql);
     $data = $db->runSql($sql);
+    $data_graph = $db->runSql($sql_graph);
 }
 
 function arrToSql($param){
@@ -204,7 +210,7 @@ function arrToSql($param){
             data.addColumn('number', "Position");
             data.addRows([
                 <?php
-                foreach ($data as $row)
+                foreach ($data_graph as $row)
                     echo "[ new Date('{$row['date']}'), {$row['clicks']}, {$row['impressions']}, {$row['ctr']}, {$row['position']}],";
                 ?>
             ]);
@@ -212,11 +218,13 @@ function arrToSql($param){
             var materialOptions = {
                 width: 900,
                 height: 400,
+                series: {
+                    // Gives each series an axis name that matches the Y-axis below.
+                    0: {axis: 'Temps'},
+                    1: {axis: 'Daylight'}
+                },
                 axes: {
                     // Adds labels to each axis; they don't have to match the axis names.
-                    y: {
-                        Temps: {label: 'Temps (Celsius)'}
-                    }
                 }
             };
 
