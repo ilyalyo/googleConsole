@@ -56,7 +56,6 @@ AVG(NULLIF(`ctr` ,0)) as `ctr`,  AVG (`position`) as `position`  FROM `data` WHE
     $sql_graph .= ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
     $sql .= $q. ' ORDER BY STR_TO_DATE(`date`, \'%Y-%m-%d\')';
 
-    var_dump($sql);
     $data = $db->runSql($sql);
     $data_graph = $db->runSql($sql_graph);
 }
