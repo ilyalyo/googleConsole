@@ -4,11 +4,11 @@ include_once "templates/base.php";
 include_once "db.php";
 
 echo pageHeader('Search Console');
-
+/*
 if(!isset($_SESSION['access_token']) || isset($_REQUEST['logout'])) {
     session_unset();
     header("location: index.php");
-}
+}*/
 $client_id = "115417360953986887127";
 
 $db = new Db();
@@ -34,12 +34,12 @@ if(!isset($w) && count($websites) > 0)
 
 $countries = $db->get_countries($w);
 $pages = $db->get_pages($w);
+$website_id = $_GET['website'];
 
-if(isset($_GET['website'])) {
-
+if(isset($website_id)) {
     $sql_graph = "SELECT `date`, SUM(`clicks`) as `clicks`,  SUM(`impressions`) as `impressions`,  
-AVG(NULLIF(`ctr` ,0)) as `ctr`,  AVG (`position`) as `position`  FROM `data` WHERE";
-    $sql = "SELECT * FROM `data` WHERE";
+AVG(NULLIF(`ctr` ,0)) as `ctr`,  AVG (`position`) as `position`  FROM `data` WHERE `site_id` = $website_id AND";
+    $sql = "SELECT * FROM `data` WHERE `site_id` = $website_id AND";
 
     $q = "";
     if (!empty($startDate) && !empty($endDate))
@@ -86,7 +86,7 @@ function arrToSql($param){
             </select>
         </div>
         <script type="text/javascript">
-            $('#website').val(<?php echo '[\''.implode($_GET['website'], '\', \'').'\']' ;?>);
+            $('#searchType').val("<?php echo $_GET['website'];?>");
         </script>
 
         <div class="col-md-2">
