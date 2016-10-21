@@ -1,6 +1,9 @@
 {
+    "minimum-stability": "dev",
     "require": {
         "google/apiclient": "^2.0",
-        "ublaboo/datagrid": "^4.4"
+        "mesour/datagrid": "3.0.*@beta",
+        "latte/latte": "^2.4",
+        "mesour/array-manager": "^0.0.1"
     }
 }

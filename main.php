@@ -2,15 +2,14 @@
 include_once __DIR__ . '/vendor/autoload.php';
 include_once "templates/base.php";
 include_once "db.php";
-use \Ublaboo\DataGrid\DataGrid as DataGrid;
 
 echo pageHeader('Search Console');
-
+/*
 if(!isset($_SESSION['access_token']) || isset($_REQUEST['logout'])) {
     session_unset();
     header("location: index.php");
-}
-$client_id = $_SESSION['client_id'];
+}*/
+$client_id = "115417360953986887127";
 
 $db = new Db();
 
@@ -38,7 +37,7 @@ $pages = $db->get_pages($w);
 
 if(isset($_GET['website'])){
 
-    $sql = "SELECT `date`, `clicks`, `impressions`, `ctr`, `position` FROM `data` WHERE";
+    $sql = "SELECT * FROM `data` WHERE";
 
     if(!empty($startDate) && !empty($endDate))
         $sql .= " STR_TO_DATE(`date`, '%Y-%m-%d') 
@@ -189,7 +188,6 @@ function arrToSql($param){
 </script>
 <?php if(!empty($data)): ?>
     <script type="text/javascript">
-
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['line', 'corechart']});
 
@@ -227,21 +225,48 @@ function arrToSql($param){
             var materialChart = new google.charts.Line(chartDiv);
             materialChart.draw(data, materialOptions);
         }
-
     </script>
-
     <body>
-    <!--Div that will hold the pie chart-->
-    <div id="chart_div">
+    <div class="container">
+        <div class="row">
+            <div id="chart_div">
+        </div>
+        <div class="row">
 
-        <?php
-        $grid = new DataGrid($this, 'grid');
+            <?php
+            // application
+            $application = new Mesour\UI\Application;
+            $application->setRequest($_REQUEST);
+            $application->run();
 
-        $grid->setDataSource($data);
-        $grid->addColumnText('date', 'Date');
-        ?>
+            // source
+            $source = new Mesour\DataGrid\Sources\ArrayGridSource('users', 'id', $data);
+
+            // grid
+            $grid = new Mesour\UI\DataGrid('basicDataGrid', $application);
+
+            $grid->setSource($source);
+            $grid->enablePager(10);
+            $grid->setDefaultOrder('date', 'DESC');
+            $grid->addText('date', 'Date');
+            $grid->addText('query', 'query');
+            $grid->addText('page', 'Page');
+            $grid->addText('country', 'country');
+            $grid->addText('device', 'device');
+
+            $grid->addNumber('clicks', 'Clicks');
+            $grid->addNumber('impressions', 'impressions');
+            $grid->addNumber('ctr', 'ctr');
+            $grid->addNumber('position', 'position');
+
+            $grid->render();
+            ?>
+        </div>
+    </div>
+
     </body>
     <?php /*var_dump($data)*/ ?>
 <?php else: ?>
     <?php echo "Nothing to show"?>
 <?php endif; ?>
+<?php echo pageFooter();

@@ -13,32 +13,33 @@ function pageHeader($title)
   <head>
     <title>" . $title . "</title>
     <link href='styles/style.css' rel='stylesheet' type='text/css' />
-    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js\"></script>
     
-
-    <!-- Bootstrap-->
-    <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>
-    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">
     
+    <!-- GRID -->
+    <link href=\"styles/bootstrap.min.css\" rel=\"stylesheet\">
+    <link href=\"styles/font-awesome.min.css\" rel=\"stylesheet\">
 
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src=\"/js/ie8-responsive-file-warning.js\"></script><![endif]-->
+    <script src=\"js/jquery.js\"></script>
+    <script src=\"js/jquery.ui.js\"></script>
+
+    <link href=\"styles/mesour.grid.css\" rel=\"stylesheet\">
+    <script src=\"js/mesour.grid.js\"></script>
+    
     <!-- Include Required Prerequisites -->
     <script type=\"text/javascript\" src=\"//cdn.jsdelivr.net/momentjs/latest/moment.min.js\"></script>
- 
-    <!-- Include Date Range Picker -->
+
     <script type=\"text/javascript\" src=\"//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js\"></script>
-    <link rel=\"stylesheet\" type=\"text/css\" href=\"//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css\" />
+    <link rel =\"stylesheet\" type=\"text/css\" href=\"//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css\"/>
 
     <!-- Google charts -->
     <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>
     
-    <!-- Datepicker
-    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js\"></script>
-    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.min.css\">
-    -->
     <!-- Multioption select-->
     <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css\">
-    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js\"></script>
-    
+    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js\"></script >
+
   </head>
   <body>\n";
 
@@ -53,16 +54,20 @@ function pageHeader($title)
 }
 
 
-function pageFooter($file = null)
+function pageFooter()
 {
-  $ret = "";
-  if ($file) {
-    $ret .= "<h3>Code:</h3>";
-    $ret .= "<pre class='code'>";
-    $ret .= htmlspecialchars(file_get_contents($file));
-    $ret .= "</pre>";
-  }
-  $ret .= "</html>";
+  $ret = "    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src=\"js/jquery.cookie.js\"></script>
+    <script src=\"js/jquery.nette.js\"></script>
+    <script src=\"js/netteForms.js\"></script>
+    <script src=\"js/jquery.niceCodeLines.js\"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src=\"js/bootstrap.min.js\"></script>
+    <script src=\"js/main.js\"></script>
+    </html>";
 
   return $ret;
 }

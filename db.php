@@ -95,6 +95,7 @@ GROUP BY page ORDER BY 1 DESC";
         $result = [];
         while ($row = mysqli_fetch_assoc($query)){
             $result [] = [
+                "id" => $row['id'],
                 "date" => $row['date'],
                 "country" => $row['country'],
                 "device" => $row['device'],
