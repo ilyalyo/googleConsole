@@ -4,11 +4,10 @@ include_once "templates/base.php";
 include_once "db.php";
 
 echo pageHeader('Search Console');
-/*
 if(!isset($_SESSION['access_token']) || isset($_REQUEST['logout'])) {
     session_unset();
     header("location: index.php");
-}*/
+}
 $client_id = "115417360953986887127";
 
 $db = new Db();
@@ -85,7 +84,7 @@ function arrToSql($param){
             </select>
         </div>
         <script type="text/javascript">
-            $('#searchType').val("<?php echo $_GET['website'];?>");
+            $('#website').val("<?php echo $_GET['website'];?>");
         </script>
 
         <div class="col-md-2">
