@@ -8,7 +8,8 @@ if(!isset($_SESSION['access_token']) || isset($_REQUEST['logout'])) {
     session_unset();
     header("location: index.php");
 }
-$client_id = "115417360953986887127";
+//$client_id = "115417360953986887127";
+$client_id = $_SESSION['client_id'];
 
 $db = new Db();
 
