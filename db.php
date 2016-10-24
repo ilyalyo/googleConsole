@@ -109,4 +109,19 @@ GROUP BY page ORDER BY 1 DESC";
         }
         return $result;
     }
+    
+    public function runSqlGraph($sql){
+        $query = mysqli_query($this->connection, $sql);
+        $result = [];
+        while ($row = mysqli_fetch_assoc($query)){
+            $result [] = [
+                "date" => $row['date'],
+                "clicks" => $row['clicks'],
+                "impressions" => $row['impressions'],
+                "ctr" => $row['ctr'],
+                "position" => $row['position'],
+            ];
+        }
+        return $result;
+    }
 }

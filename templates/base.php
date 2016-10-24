@@ -14,22 +14,20 @@ function pageHeader($title)
     <title>" . $title . "</title>
     <link href='styles/style.css' rel='stylesheet' type='text/css' />
     
-    
     <!-- GRID -->
-    <link href=\"styles/bootstrap.min.css\" rel=\"stylesheet\">
-    <link href=\"styles/font-awesome.min.css\" rel=\"stylesheet\">
+    <script src=\"js/grid/jquery.js\"></script>
+<script src=\"js/grid/moment.min.js\"></script>
 
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src=\"/js/ie8-responsive-file-warning.js\"></script><![endif]-->
-    <script src=\"js/jquery.js\"></script>
-    <script src=\"js/jquery.ui.js\"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel=\"stylesheet\" href=\"styles/grid/bootstrap.min.css\">
 
-    <link href=\"styles/mesour.grid.css\" rel=\"stylesheet\">
-    <script src=\"js/mesour.grid.js\"></script>
+	<link rel=\"stylesheet\" href=\"styles/grid/bootstrap-datetimepicker.min.css\">
+
+	<link rel=\"stylesheet\" href=\"styles/grid/font-awesome.min.css\">
+
+	<link rel=\"stylesheet\" href=\"styles/grid/mesour.grid.min.css\">
+
     
-    <!-- Include Required Prerequisites -->
-    <script type=\"text/javascript\" src=\"//cdn.jsdelivr.net/momentjs/latest/moment.min.js\"></script>
-
     <script type=\"text/javascript\" src=\"//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js\"></script>
     <link rel =\"stylesheet\" type=\"text/css\" href=\"//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css\"/>
 
@@ -57,16 +55,14 @@ function pageHeader($title)
 function pageFooter()
 {
   $ret = "    
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src=\"js/jquery.cookie.js\"></script>
-    <script src=\"js/jquery.nette.js\"></script>
-    <script src=\"js/netteForms.js\"></script>
-    <script src=\"js/jquery.niceCodeLines.js\"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src=\"js/bootstrap.min.js\"></script>
-    <script src=\"js/main.js\"></script>
+  <!-- Latest compiled and minified JavaScript -->
+<script src=\"js/grid/jquery.ui.js\"></script>
+
+<script src=\"js/grid/bootstrap.min.js\"></script>
+
+<script src=\"js/grid/bootstrap-datetimepicker.min.js\"></script>
+
+<script src=\"js/grid/mesour.grid.min.js\"></script>
     </html>";
 
   return $ret;
