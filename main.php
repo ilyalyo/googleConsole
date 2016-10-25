@@ -3,6 +3,9 @@
 require_once __DIR__ . '/vendor/autoload.php';
 include_once __DIR__ . '/db.php';
 
+define('LOG_DIR', __DIR__ . '/../log');
+define('TEMP_DIR', __DIR__ . '/../temp/cache');
+
 // Start the session (for storing access tokens and things)
 if (!headers_sent()) {
     session_start();
@@ -110,22 +113,23 @@ $source = new Mesour\DataGrid\Sources\ArrayGridSource('uss2q','id', $data);
 $grid = new Mesour\UI\DataGrid('uss2q', $application);
 
 $grid->setSource($source);
-
 $grid->enableFilter(FALSE);
 $grid->enablePager(10);
-$grid->setDefaultOrder('date', 'DESC');
+if(!empty($data)) {
 
-$grid->addText('date', 'Date');
-$grid->addText('query', 'query');
-$grid->addText('page', 'Page');
-$grid->addText('country', 'country');
-$grid->addText('device', 'device');
+    $grid->setDefaultOrder('date', 'DESC');
 
-$grid->addNumber('clicks', 'Clicks');
-$grid->addNumber('impressions', 'impressions');
-$grid->addNumber('ctr', 'ctr');
-$grid->addNumber('position', 'position');
+    $grid->addText('date', 'Date');
+    $grid->addText('query', 'query');
+    $grid->addText('page', 'Page');
+    $grid->addText('country', 'country');
+    $grid->addText('device', 'device');
 
+    $grid->addNumber('clicks', 'Clicks');
+    $grid->addNumber('impressions', 'impressions');
+    $grid->addNumber('ctr', 'ctr');
+    $grid->addNumber('position', 'position');
+}
 $createdGrid = $grid->create();
 ?>
 <a class='logout' href='?logout'>Logout</a>
@@ -203,12 +207,15 @@ $createdGrid = $grid->create();
 </form>
 <div class="container">
     <div class="row">
-        <div id="chart_div">
-        </div>
+        <?php if(!empty($data)): ?>
+            <div id="chart_div"></div>
+        <?php else :?>
+            <h1>No data</h1>
+        <?php endif;?>
         <div class="row">
             <div class="container" style="margin-top: 50px;">
                 <?php
-                echo $createdGrid->render();
+                    echo $createdGrid->render();
                 ?>
             </div>
         </div>
