@@ -232,11 +232,21 @@ $createdGrid = $grid->create();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
 
 <script type="text/javascript">
-    $('#website').val("<?php echo $_GET['website'];?>");
-    $('#page').val(<?php echo '[\''.implode($_GET['page'], '\', \'').'\']' ;?>);
-    $('#searchType').val("<?php echo $_GET['searchType'];?>")
-    $('#device').val(<?php echo '[\''.implode($_GET['device'], '\', \'').'\']' ;?>);
-    $('#country').val(<?php echo '[\''.implode($_GET['country'], '\', \'').'\']' ;?>);
+    <?php if(isset($_GET['website'])):?>
+        $('#website').val("<?php echo $_GET['website'];?>");
+    <?php endif;?>
+    <?php if(isset($_GET['page'])):?>
+        $('#page').val(<?php echo '[\''.implode($_GET['page'], '\', \'').'\']' ;?>);
+    <?php endif;?>
+    <?php if(isset($_GET['searchType'])):?>
+        $('#searchType').val("<?php echo $_GET['searchType'];?>")
+    <?php endif;?>
+    <?php if(isset($_GET['device'])):?>
+        $('#device').val(<?php echo '[\''.implode($_GET['device'], '\', \'').'\']' ;?>);
+    <?php endif;?>
+    <?php if(isset($_GET['country'])):?>
+        $('#country').val(<?php echo '[\''.implode($_GET['country'], '\', \'').'\']' ;?>);
+    <?php endif;?>
 </script>
 
 <script src="js/grid/mesour.grid.min.js"></script>
