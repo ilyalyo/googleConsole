@@ -27,29 +27,39 @@ $data = [];
 $data_graph = [];
 
 if(isset($_GET['daterange'])) {
+    $_SESSION['daterange'] = $_GET['daterange'];
     $arrDate = explode(' - ', $_GET['daterange']);
     if (count($arrDate) > 1) {
         $startDate = $arrDate[0];
         $endDate = $arrDate[1];
     }
 }
-else{
+else if(isset($_SESSION['daterange'])){
+    $arrDate = explode(' - ', $_SESSION['daterange']);
+    if (count($arrDate) > 1) {
+        $startDate = $arrDate[0];
+        $endDate = $arrDate[1];
+    }
+}
+else {
     $endDate = date('Y-m-d');
     $startDate = date('Y-m-d', strtotime("-1 month"));
 }
 
 $websites = $db->get_websites($client_id);
 
-$website_id = 2;
-if(isset($_GET['website']))
+$website_id = null;
+if(isset($_GET['website'])){
     $website_id = $_GET['website'];
-if(!isset($_GET['website']) && count($websites) > 0)
+    $_SESSION['website'] = $website_id;
+}
+else if(isset($_SESSION['website']))
+    $website_id = $_SESSION['website'];
+else if(!isset($websites) && count($websites) > 0)
     $website_id = $websites[0]['id'];
-
-$countries = $db->get_countries($website_id);
-$pages = $db->get_pages($website_id);
-
 if(isset($website_id)) {
+    $countries = $db->get_countries($website_id);
+    $pages = $db->get_pages($website_id);
     $sql_graph = "SELECT `date`, SUM(`clicks`) as `clicks`,  SUM(`impressions`) as `impressions`,  
 AVG(NULLIF(`ctr` ,0)) as `ctr`,  AVG (`position`) as `position`  FROM `data` WHERE `site_id` = $website_id AND";
     $sql = "SELECT * FROM `data` WHERE `site_id` = $website_id AND";
@@ -116,7 +126,6 @@ $grid->setSource($source);
 $grid->enableFilter(FALSE);
 $grid->enablePager(10);
 if(!empty($data)) {
-
     $grid->setDefaultOrder('date', 'DESC');
 
     $grid->addText('date', 'Date');
